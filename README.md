@@ -99,14 +99,14 @@ Point the chatbot at your LLM (any OpenAI-compatible endpoint):
 
 ```bash
 # Windows (cmd)
-set LLM_BASE_URL=http://localhost:11434/v1
-set LLM_API_KEY=ollama
-set LLM_MODEL=gpt-oss:120b
+set LLM_BASE_URL=
+set LLM_API_KEY=
+set LLM_MODEL=
 
 # macOS/Linux
-export LLM_BASE_URL=http://localhost:11434/v1
-export LLM_API_KEY=ollama
-export LLM_MODEL=gpt-oss:120b
+export LLM_BASE_URL=
+export LLM_API_KEY=
+export LLM_MODEL=
 ```
 (Defaults to a local Ollama endpoint if you don't set these.)
 
@@ -122,27 +122,12 @@ python run_pipeline.py
 ```
 Check `reports/parse_report.txt` for any `[FAIL]` lines before moving on.
 
-**2. Chat in the terminal:**
-```bash
-python -m lineage.chat
-> where does CD_CLA_EXP come from in EXP_ARC_EFPB3
-> what uses CD_PROFIL_ALIM from WRK_ARRIMAGE_SRSK_ARC_EXP downstream
-> list tables
-> quit
-```
 
-**3. Or use the browser UI:**
+**2. Or use the browser UI:**
 ```bash
 streamlit run app.py
 ```
 
-**4. Or skip the LLM and query directly:**
-```bash
-python -m lineage.ask --table DB_SRC_WORK.EXP_ARC_EFPB3 --column CD_CLA_EXP
-python -m lineage.ask_forward --table DB_SRC_WORK.WRK_ARRIMAGE_SRSK_ARC_EXP --column CD_PROFIL_ALIM
-```
-
----
 
 ## Trying it with the example scripts
 
@@ -151,18 +136,6 @@ pattern the resolver understands — a view, a plain `INSERT...SELECT`, a
 nested subquery pulling from a view, and a volatile table joined into an
 `INSERT`. They're reconstructed/illustrative demo fixtures, not real
 production data, so they're safe to share.
-
-```bash
-copy examples\*.sql raw_sql\        (Windows)
-cp examples/*.sql raw_sql/          (macOS/Linux)
-python run_pipeline.py
-python -m lineage.chat
-> where does CD_CLA_EXP come from in EXP_ARC_EFPB3
-```
-Expected chain: `EXP_ARC_EFPB3.CD_CLA_EXP` → inline subquery → the view
-`V_COUR_SRS_O_ARC.CD_CLA_EXP` → base table (no further script defines it).
-
----
 
 ## Known limitations / things to know
 
